@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "ca13a838265c55c81fd0",
   "position": {
-    "x": 32,
-    "y": 120,
+    "x": 32.758620689655174,
+    "y": 120.68965517241381,
     "z": 4000,
-    "height": 408,
-    "width": 920,
+    "height": 236.20689655172416,
+    "width": 943.10344827586209,
     "tabOrder": 4000
   },
   "visual": {
@@ -290,5 +290,65 @@
         }
       ]
     }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "6e66cf491e0d014b9206",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Measures"
+              }
+            },
+            "Property": "# Patients"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7f53c22d206d492b91bd",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Measures"
+              }
+            },
+            "Property": "Referral To Delivery Rate (%)"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "da9222b10b38c22040b0",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Measures"
+              }
+            },
+            "Property": "Total First-Year Value"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "147eef408cc0d16136e2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Measures"
+              }
+            },
+            "Property": "Churn Rate (%)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

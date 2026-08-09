@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "28edae7ea8461926ae5d",
   "position": {
     "x": 32,
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Referral Channel.Referral Channel",
-              "nativeQueryRef": "Referral Channel"
+              "nativeQueryRef": "Referral Channel",
+              "active": true
             }
           ]
         }

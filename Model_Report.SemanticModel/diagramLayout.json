@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 0,
-        "y": 0
+        "x": 10.769230842590332,
+        "y": 6.153846263885498
       },
       "nodes": [
         {
@@ -146,6 +146,45 @@
           },
           "nodeIndex": "Funnel Stage",
           "nodeLineageTag": "ce0bf92d-960b-4cc9-8700-fe661ec06ac7",
+          "size": {
+            "height": 173,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1708.6153793334961,
+            "y": 186.5
+          },
+          "nodeIndex": "Months Since Referral",
+          "nodeLineageTag": "ae7d8ae1-f5eb-47d0-be31-59100597c354",
+          "size": {
+            "height": 167,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1992.6153793334961,
+            "y": 174.5
+          },
+          "nodeIndex": "NPS Touchpoint",
+          "nodeLineageTag": "9efa1a2c-060c-442b-b865-50184f96edd1",
+          "size": {
+            "height": 180,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2276.6153793334961,
+            "y": 174.5
+          },
+          "nodeIndex": "Pipeline Stage",
+          "nodeLineageTag": "43520185-1c6e-4e68-91e3-600e1938de3e",
           "size": {
             "height": 128,
             "width": 234
