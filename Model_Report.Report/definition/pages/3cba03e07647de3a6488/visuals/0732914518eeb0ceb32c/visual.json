@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "0732914518eeb0ceb32c",
   "position": {
-    "x": 32,
-    "y": 552,
+    "x": 32.758620689655174,
+    "y": 372.41379310344831,
     "z": 6000,
-    "height": 408,
-    "width": 920,
+    "height": 574.13793103448279,
+    "width": 943.10344827586209,
     "tabOrder": 6000
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Referral Channel.Referral Channel",
-              "nativeQueryRef": "Referral Channel"
+              "nativeQueryRef": "Referral Channel",
+              "active": true
             }
           ]
         },
@@ -65,8 +66,7 @@
             },
             "direction": "Descending"
           }
-        ],
-        "isDefaultSort": false
+        ]
       }
     },
     "visualContainerObjects": {
@@ -125,5 +125,37 @@
         }
       ]
     }
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "049905118b060693c6ee",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Referral Channel"
+              }
+            },
+            "Property": "Referral Channel"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "10c3305f70d1b2cb9191",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Measures"
+              }
+            },
+            "Property": "Total First-Year Value"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

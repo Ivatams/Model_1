@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "ed35557731df108d7894",
   "position": {
     "x": 32,
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Speech Language Pathologist.Speech Language Pathologist ID",
-              "nativeQueryRef": "Speech Language Pathologist ID"
+              "nativeQueryRef": "Speech Language Pathologist ID",
+              "active": true
             }
           ]
         }
