@@ -1,0 +1,38 @@
+/// The patient's current engagement status after device delivery (Active or Churned). Only populated for patients whose device has been delivered.
+table 'Patient Status'
+	lineageTag: 9d2ff6e7-8f60-487d-8355-b4a9f8873bae
+
+	/// Post-delivery engagement status: Active or Churned (with sub-reason).
+	column 'Patient Status'
+		dataType: string
+		lineageTag: 8ff1df49-7478-4b4c-814e-15668c251467
+		summarizeBy: none
+		sourceColumn: Patient Status
+
+	/// Integer surrogate key. Relationship key to Patients.
+	column 'Patient Status Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: bcdbaee8-3e5f-4d1e-8c1a-0a4b4f5cd913
+		summarizeBy: none
+		sourceColumn: Patient Status Key
+
+	partition 'Patient Status' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("c:\Users\HP\Desktop\Tobii_Dynavox\Power_BI\Model_1\Model_1.xlsx"), null, true),
+				    Sheet = Source{[Item="02 Data",Kind="Sheet"]}[Data],
+				    DataRows = Table.Skip(Sheet, 4),
+				    Selected = Table.SelectColumns(DataRows, {"Column27"}),
+				    Renamed = Table.RenameColumns(Selected, {{"Column27", "Patient Status"}}),
+				    ReplacedNA = Table.ReplaceValue(Renamed, "n/a", null, Replacer.ReplaceValue, {"Patient Status"}),
+				    Typed = Table.TransformColumnTypes(ReplacedNA, {{"Patient Status", type text}}),
+				    Filtered = Table.SelectRows(Typed, each [Patient Status] <> null and [Patient Status] <> ""),
+				    Distinct = Table.Distinct(Filtered),
+				    Sorted = Table.Sort(Distinct, {{"Patient Status", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Sorted, "Patient Status Key", 1, 1, Int64.Type)
+				in
+				    Indexed
+

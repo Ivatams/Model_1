@@ -1,0 +1,37 @@
+/// The marketing or clinical channel through which a patient was referred into the pipeline.
+table 'Referral Channel'
+	lineageTag: 21e59511-5c2a-471b-8fa2-a114f54dad53
+
+	/// Marketing or clinical referral source (e.g. clinic, account manager, organic web).
+	column 'Referral Channel'
+		dataType: string
+		lineageTag: 56632fcb-81cf-4ba7-8b04-0c932fad1458
+		summarizeBy: none
+		sourceColumn: Referral Channel
+
+	/// Integer surrogate key. Relationship key to Patients.
+	column 'Referral Channel Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: b6e0fc2e-895a-4b9d-936e-a666a8a17334
+		summarizeBy: none
+		sourceColumn: Referral Channel Key
+
+	partition 'Referral Channel' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("c:\Users\HP\Desktop\Tobii_Dynavox\Power_BI\Model_1\Model_1.xlsx"), null, true),
+				    Sheet = Source{[Item="02 Data",Kind="Sheet"]}[Data],
+				    DataRows = Table.Skip(Sheet, 4),
+				    Selected = Table.SelectColumns(DataRows, {"Column2"}),
+				    Renamed = Table.RenameColumns(Selected, {{"Column2", "Referral Channel"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Referral Channel", type text}}),
+				    Filtered = Table.SelectRows(Typed, each [Referral Channel] <> null and [Referral Channel] <> ""),
+				    Distinct = Table.Distinct(Filtered),
+				    Sorted = Table.Sort(Distinct, {{"Referral Channel", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Sorted, "Referral Channel Key", 1, 1, Int64.Type)
+				in
+				    Indexed
+

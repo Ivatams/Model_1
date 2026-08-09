@@ -1,0 +1,36 @@
+/// Disconnected axis table listing the 5 NPS survey touchpoints in patient-journey order. Not related to any other table — used only via SELECTEDVALUE by 'Average NPS by Touchpoint' to drive the Revenue & NPS page's touchpoint comparison chart.
+table 'NPS Touchpoint'
+	lineageTag: 9efa1a2c-060c-442b-b865-50184f96edd1
+
+	column Touchpoint
+		dataType: string
+		lineageTag: 8a43fd8f-ef84-4845-b317-1c72af600831
+		summarizeBy: none
+		sourceColumn: Touchpoint
+		sortByColumn: 'Touchpoint Order'
+
+	column 'Touchpoint Order'
+		dataType: int64
+		isHidden
+		lineageTag: e55fad3c-17f9-4d2c-b2d6-222c78a33a4a
+		summarizeBy: none
+		sourceColumn: Touchpoint Order
+
+	partition 'NPS Touchpoint' = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        {"Touchpoint", "Touchpoint Order"},
+				        {
+				            {"TD.com", 1},
+				            {"E-Funding", 2},
+				            {"Post-Funding Case", 3},
+				            {"Post Support", 4},
+				            {"MYTD", 5}
+				        }
+				    ),
+				    Typed = Table.TransformColumnTypes(Source, {{"Touchpoint", type text}, {"Touchpoint Order", Int64.Type}})
+				in
+				    Typed
+

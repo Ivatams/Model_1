@@ -1,0 +1,37 @@
+/// The Speech-Language Pathologist (SLP) responsible for a patient's clinical evaluation, identified by CRM code. No name lookup was available in the source data, so patients are grouped by code only.
+table 'Speech Language Pathologist'
+	lineageTag: 918f1ce6-23eb-40a5-ac09-25e05a65c29f
+
+	/// CRM code identifying the Speech-Language Pathologist (SLP).
+	column 'Speech Language Pathologist ID'
+		dataType: string
+		lineageTag: 16dd5828-f7ad-440c-adaa-cf2c5c3c525e
+		summarizeBy: none
+		sourceColumn: Speech Language Pathologist ID
+
+	/// Integer surrogate key. Relationship key to Patients.
+	column 'Speech Language Pathologist Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: df73372a-f94a-4876-bfc2-852d21d0a36f
+		summarizeBy: none
+		sourceColumn: Speech Language Pathologist Key
+
+	partition 'Speech Language Pathologist' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("c:\Users\HP\Desktop\Tobii_Dynavox\Power_BI\Model_1\Model_1.xlsx"), null, true),
+				    Sheet = Source{[Item="02 Data",Kind="Sheet"]}[Data],
+				    DataRows = Table.Skip(Sheet, 4),
+				    Selected = Table.SelectColumns(DataRows, {"Column5"}),
+				    Renamed = Table.RenameColumns(Selected, {{"Column5", "Speech Language Pathologist ID"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Speech Language Pathologist ID", type text}}),
+				    Filtered = Table.SelectRows(Typed, each [Speech Language Pathologist ID] <> null and [Speech Language Pathologist ID] <> ""),
+				    Distinct = Table.Distinct(Filtered),
+				    Sorted = Table.Sort(Distinct, {{"Speech Language Pathologist ID", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Sorted, "Speech Language Pathologist Key", 1, 1, Int64.Type)
+				in
+				    Indexed
+

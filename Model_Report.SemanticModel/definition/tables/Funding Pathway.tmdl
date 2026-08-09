@@ -1,0 +1,37 @@
+/// The funding program or payer type used to finance the patient's device.
+table 'Funding Pathway'
+	lineageTag: 167ddf0a-df6d-491c-bd5e-e0556ae064b3
+
+	/// Funding program or payer type (e.g. Medicaid Waiver, NHS, Private Insurance).
+	column 'Funding Pathway'
+		dataType: string
+		lineageTag: e098e12c-afbd-4ec0-ab4f-e7b080cd1911
+		summarizeBy: none
+		sourceColumn: Funding Pathway
+
+	/// Integer surrogate key. Relationship key to Patients.
+	column 'Funding Pathway Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: 9ba2726a-f5e5-42cd-a056-12af4c434316
+		summarizeBy: none
+		sourceColumn: Funding Pathway Key
+
+	partition 'Funding Pathway' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("c:\Users\HP\Desktop\Tobii_Dynavox\Power_BI\Model_1\Model_1.xlsx"), null, true),
+				    Sheet = Source{[Item="02 Data",Kind="Sheet"]}[Data],
+				    DataRows = Table.Skip(Sheet, 4),
+				    Selected = Table.SelectColumns(DataRows, {"Column4"}),
+				    Renamed = Table.RenameColumns(Selected, {{"Column4", "Funding Pathway"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Funding Pathway", type text}}),
+				    Filtered = Table.SelectRows(Typed, each [Funding Pathway] <> null and [Funding Pathway] <> ""),
+				    Distinct = Table.Distinct(Filtered),
+				    Sorted = Table.Sort(Distinct, {{"Funding Pathway", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Sorted, "Funding Pathway Key", 1, 1, Int64.Type)
+				in
+				    Indexed
+

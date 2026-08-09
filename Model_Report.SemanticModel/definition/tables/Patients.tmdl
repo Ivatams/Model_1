@@ -1,0 +1,324 @@
+/// One row per patient referred into Tobii Dynavox's AAC device program. Tracks the referral-to-delivery pipeline, post-delivery revenue, NPS feedback, and retention status. Grain: one row per Patient ID. Source: '02 Data' sheet of Model_1.xlsx (synthetic data, 180 records).
+table Patients
+	lineageTag: b1d482f9-4e89-4c2f-944c-9a99f7cc950d
+
+	/// Unique identifier for the patient record, as assigned by the CRM system.
+	column 'Patient ID'
+		dataType: string
+		lineageTag: 6d269d6b-3ae4-436b-9688-abf46296b89f
+		summarizeBy: none
+		sourceColumn: Patient ID
+
+	column 'Referral Date'
+		dataType: dateTime
+		isHidden
+		formatString: mm/dd/yyyy
+		isAvailableInMdx: false
+		lineageTag: 6e1a0c7c-3ec1-4461-b8f0-8ebb83f75c0b
+		summarizeBy: none
+		sourceColumn: Referral Date
+
+	column 'Delivery Date'
+		dataType: dateTime
+		isHidden
+		formatString: mm/dd/yyyy
+		isAvailableInMdx: false
+		lineageTag: 3d58aa18-369e-4f96-8656-2bc76bc30309
+		summarizeBy: none
+		sourceColumn: Delivery Date
+
+	column 'Last Engagement Date'
+		dataType: dateTime
+		isHidden
+		formatString: mm/dd/yyyy
+		isAvailableInMdx: false
+		lineageTag: 8307c39b-57ed-4f5a-8a2c-eb82ad3b425c
+		summarizeBy: none
+		sourceColumn: Last Engagement Date
+
+	/// Whether the Speech-Language Pathologist evaluation has been completed for this patient.
+	column 'SLP Evaluation Done'
+		dataType: string
+		lineageTag: d0cbf42f-52d6-4f02-9cf4-ad68fff7b953
+		summarizeBy: none
+		sourceColumn: SLP Evaluation Done
+
+	column 'Trial Arranged'
+		dataType: string
+		lineageTag: ff0cdcde-f1c9-4a56-839c-8875b048de92
+		summarizeBy: none
+		sourceColumn: Trial Arranged
+
+	column 'Trial Completed'
+		dataType: string
+		lineageTag: cfd3bc47-3db0-4e98-a5ce-affe549e5943
+		summarizeBy: none
+		sourceColumn: Trial Completed
+
+	/// Whether the funding application has been submitted.
+	column 'Application Submitted'
+		dataType: string
+		lineageTag: 365f6aad-2fde-4cfb-bd6d-5d9903aaa9b9
+		summarizeBy: none
+		sourceColumn: Application Submitted
+
+	column 'Funding Approved'
+		dataType: string
+		lineageTag: 62a1e4e6-27e5-4e91-a75e-ff62ec53d28b
+		summarizeBy: none
+		sourceColumn: Funding Approved
+
+	column 'Device Delivered'
+		dataType: string
+		lineageTag: f2a5d2aa-18af-4464-a362-4ca3d7ef0f7c
+		summarizeBy: none
+		sourceColumn: Device Delivered
+
+	/// Count of account manager touchpoints prior to and during referral.
+	column 'Account Manager Touchpoints'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 483c31d6-95ba-4dda-ad0e-cfd911d53d02
+		summarizeBy: sum
+		sourceColumn: Account Manager Touchpoints
+
+	/// Elapsed calendar days from referral to device delivery.
+	column 'Time To Device (Days)'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 8ee82bbe-f330-4f64-b2aa-18e74780f349
+		summarizeBy: average
+		sourceColumn: Time To Device (Days)
+
+	/// Value of the delivered device in SEK.
+	column 'Device Value'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 82af4315-841b-491b-8c5b-71962b4db234
+		summarizeBy: sum
+		sourceColumn: Device Value
+
+	/// Post-delivery software revenue in SEK.
+	column 'Software Revenue'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: f8494ae2-1288-4b4b-ae85-cfbdc9ad89f8
+		summarizeBy: sum
+		sourceColumn: Software Revenue
+
+	/// Post-delivery accessories revenue in SEK.
+	column 'Accessories Revenue'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: b76258bc-c139-4979-a067-cef1cd70df87
+		summarizeBy: sum
+		sourceColumn: Accessories Revenue
+
+	/// Total value in SEK across device, software and accessories in the first year post-delivery.
+	column 'Total First Year Value'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: c92e2706-e204-499f-b292-35a785490f3f
+		summarizeBy: sum
+		sourceColumn: Total First Year Value
+
+	/// Count of support touchpoints after device delivery.
+	column 'Post-Delivery Touchpoints'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: c2bc6bbc-8354-4010-b3b9-d687daea8c21
+		summarizeBy: sum
+		sourceColumn: Post-Delivery Touchpoints
+
+	/// Net Promoter Score captured on TD.com.
+	column 'NPS TD.com'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 3b3c5af9-617d-4890-8976-29db9bc6863f
+		summarizeBy: average
+		sourceColumn: NPS TD.com
+
+	/// Net Promoter Score captured during the e-funding process.
+	column 'NPS E-Funding'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 27440347-1e68-4a68-9499-2ee299cef0de
+		summarizeBy: average
+		sourceColumn: NPS E-Funding
+
+	/// Net Promoter Score captured on the post-funding case or call.
+	column 'NPS Post Funding Case'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 48b57372-431b-454d-8dcf-611f3f1e036e
+		summarizeBy: average
+		sourceColumn: NPS Post Funding Case
+
+	/// Net Promoter Score captured after a support interaction.
+	column 'NPS Post Support'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 6bf0c861-eeaa-4d64-ada4-9570d718f6f4
+		summarizeBy: average
+		sourceColumn: NPS Post Support
+
+	/// Net Promoter Score captured in the MyTD (My Tobii Dynavox) portal.
+	column 'NPS MYTD'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 1fd8ca0b-3c58-48c4-8731-f1f0bcd2a237
+		summarizeBy: average
+		sourceColumn: NPS MYTD
+
+	/// Number of months the patient remained active after device delivery.
+	column 'Months Active Post Delivery'
+		dataType: int64
+		isHidden
+		formatString: #,##0
+		isAvailableInMdx: false
+		lineageTag: 11e825b6-5aff-45fc-81d6-f62863c9045c
+		summarizeBy: average
+		sourceColumn: Months Active Post Delivery
+
+	column 'Referral Channel Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: 17e43f25-8dbb-4201-ae1a-2f12cff03dd6
+		summarizeBy: none
+		sourceColumn: Referral Channel Key
+
+	column 'Diagnosis Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: b64b32d5-c340-4b8d-88ba-1dd91f00f1bb
+		summarizeBy: none
+		sourceColumn: Diagnosis Key
+
+	column 'Funding Pathway Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: 4871139b-24b2-4f77-bfd1-56b7156b9b04
+		summarizeBy: none
+		sourceColumn: Funding Pathway Key
+
+	column 'Speech Language Pathologist Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: 2d92558e-d063-4a4e-bdfc-57fa13c258dd
+		summarizeBy: none
+		sourceColumn: Speech Language Pathologist Key
+
+	column 'Account Manager Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: 0a837bca-c647-402c-b108-900ab597b5ed
+		summarizeBy: none
+		sourceColumn: Account Manager Key
+
+	column 'Patient Status Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: c8678311-cd6a-4ad0-abb1-c2c68291820b
+		summarizeBy: none
+		sourceColumn: Patient Status Key
+
+	column 'Churn Reason Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: c6aac024-2f63-4320-9601-b1f275ac17e0
+		summarizeBy: none
+		sourceColumn: Churn Reason Key
+
+	partition Patients = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("c:\Users\HP\Desktop\Tobii_Dynavox\Power_BI\Model_1\Model_1.xlsx"), null, true),
+				    Sheet = Source{[Item="02 Data",Kind="Sheet"]}[Data],
+				    DataRows = Table.Skip(Sheet, 4),
+				    Renamed = Table.RenameColumns(DataRows, {
+				        {"Column1", "Patient ID"}, {"Column2", "Referral Channel"}, {"Column3", "Diagnosis"},
+				        {"Column4", "Funding Pathway"}, {"Column5", "Speech Language Pathologist ID"}, {"Column6", "Account Manager ID"},
+				        {"Column7", "Account Manager Touchpoints"}, {"Column8", "Referral Date"}, {"Column9", "SLP Evaluation Done"},
+				        {"Column10", "Trial Arranged"}, {"Column11", "Trial Completed"}, {"Column12", "Application Submitted"},
+				        {"Column13", "Funding Approved"}, {"Column14", "Device Delivered"}, {"Column15", "Delivery Date"},
+				        {"Column16", "Time To Device (Days)"}, {"Column17", "Device Value"}, {"Column18", "Software Revenue"},
+				        {"Column19", "Accessories Revenue"}, {"Column20", "Total First Year Value"}, {"Column21", "Post-Delivery Touchpoints"},
+				        {"Column22", "NPS TD.com"}, {"Column23", "NPS E-Funding"}, {"Column24", "NPS Post Funding Case"},
+				        {"Column25", "NPS Post Support"}, {"Column26", "NPS MYTD"}, {"Column27", "Patient Status"},
+				        {"Column28", "Last Engagement Date"}, {"Column29", "Churn Reason"}, {"Column30", "Months Active Post Delivery"}
+				    }),
+				    FilteredRows = Table.SelectRows(Renamed, each [Patient ID] <> null and [Patient ID] <> ""),
+				    PlaceholderCols = {"Delivery Date","Time To Device (Days)","Device Value","Software Revenue","Accessories Revenue","Total First Year Value","Post-Delivery Touchpoints","Patient Status","Last Engagement Date","Churn Reason","Months Active Post Delivery","Account Manager ID"},
+				    ReplacedDash = Table.ReplaceValue(FilteredRows, "—", null, Replacer.ReplaceValue, PlaceholderCols),
+				    ReplacedNA = Table.ReplaceValue(ReplacedDash, "n/a", null, Replacer.ReplaceValue, PlaceholderCols),
+				    MonthLookup = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"},
+				    ParsedReferralDate = Table.TransformColumns(ReplacedNA, {{"Referral Date", each let p = Text.Split(_, "-") in #date(Number.FromText(p{2}), List.PositionOf(MonthLookup, p{1}) + 1, Number.FromText(p{0})), type date}}),
+				    ParsedDeliveryDate = Table.TransformColumns(ParsedReferralDate, {{"Delivery Date", each if _ = null then null else let p = Text.Split(_, "-") in #date(Number.FromText(p{2}), List.PositionOf(MonthLookup, p{1}) + 1, Number.FromText(p{0})), type date}}),
+				    ParsedLastEngagement = Table.TransformColumns(ParsedDeliveryDate, {{"Last Engagement Date", each if _ = null then null else Date.FromText(_), type date}}),
+				    ChangedTypes = Table.TransformColumnTypes(ParsedLastEngagement, {
+				        {"Patient ID", type text}, {"Referral Channel", type text}, {"Diagnosis", type text}, {"Funding Pathway", type text},
+				        {"Speech Language Pathologist ID", type text}, {"Account Manager ID", type text}, {"Account Manager Touchpoints", Int64.Type},
+				        {"SLP Evaluation Done", type text}, {"Trial Arranged", type text}, {"Trial Completed", type text}, {"Application Submitted", type text},
+				        {"Funding Approved", type text}, {"Device Delivered", type text}, {"Time To Device (Days)", Int64.Type},
+				        {"Device Value", Int64.Type}, {"Software Revenue", Int64.Type}, {"Accessories Revenue", Int64.Type},
+				        {"Total First Year Value", Int64.Type}, {"Post-Delivery Touchpoints", Int64.Type}, {"NPS TD.com", Int64.Type},
+				        {"NPS E-Funding", Int64.Type}, {"NPS Post Funding Case", Int64.Type}, {"NPS Post Support", Int64.Type},
+				        {"NPS MYTD", Int64.Type}, {"Patient Status", type text}, {"Churn Reason", type text}, {"Months Active Post Delivery", Int64.Type}
+				    }),
+				    LookupReferralChannel = Table.AddIndexColumn(Table.Sort(Table.Distinct(Table.SelectRows(Table.SelectColumns(ChangedTypes, {"Referral Channel"}), each [Referral Channel] <> null)), {{"Referral Channel", Order.Ascending}}), "Referral Channel Key", 1, 1, Int64.Type),
+				    JoinReferralChannel = Table.NestedJoin(ChangedTypes, {"Referral Channel"}, LookupReferralChannel, {"Referral Channel"}, "RC_Lookup", JoinKind.LeftOuter),
+				    ExpandReferralChannel = Table.ExpandTableColumn(JoinReferralChannel, "RC_Lookup", {"Referral Channel Key"}, {"Referral Channel Key"}),
+				    LookupDiagnosis = Table.AddIndexColumn(Table.Sort(Table.Distinct(Table.SelectRows(Table.SelectColumns(ChangedTypes, {"Diagnosis"}), each [Diagnosis] <> null)), {{"Diagnosis", Order.Ascending}}), "Diagnosis Key", 1, 1, Int64.Type),
+				    JoinDiagnosis = Table.NestedJoin(ExpandReferralChannel, {"Diagnosis"}, LookupDiagnosis, {"Diagnosis"}, "Dx_Lookup", JoinKind.LeftOuter),
+				    ExpandDiagnosis = Table.ExpandTableColumn(JoinDiagnosis, "Dx_Lookup", {"Diagnosis Key"}, {"Diagnosis Key"}),
+				    LookupFundingPathway = Table.AddIndexColumn(Table.Sort(Table.Distinct(Table.SelectRows(Table.SelectColumns(ChangedTypes, {"Funding Pathway"}), each [Funding Pathway] <> null)), {{"Funding Pathway", Order.Ascending}}), "Funding Pathway Key", 1, 1, Int64.Type),
+				    JoinFundingPathway = Table.NestedJoin(ExpandDiagnosis, {"Funding Pathway"}, LookupFundingPathway, {"Funding Pathway"}, "FP_Lookup", JoinKind.LeftOuter),
+				    ExpandFundingPathway = Table.ExpandTableColumn(JoinFundingPathway, "FP_Lookup", {"Funding Pathway Key"}, {"Funding Pathway Key"}),
+				    LookupSLP = Table.AddIndexColumn(Table.Sort(Table.Distinct(Table.SelectRows(Table.SelectColumns(ChangedTypes, {"Speech Language Pathologist ID"}), each [Speech Language Pathologist ID] <> null)), {{"Speech Language Pathologist ID", Order.Ascending}}), "Speech Language Pathologist Key", 1, 1, Int64.Type),
+				    JoinSLP = Table.NestedJoin(ExpandFundingPathway, {"Speech Language Pathologist ID"}, LookupSLP, {"Speech Language Pathologist ID"}, "SLP_Lookup", JoinKind.LeftOuter),
+				    ExpandSLP = Table.ExpandTableColumn(JoinSLP, "SLP_Lookup", {"Speech Language Pathologist Key"}, {"Speech Language Pathologist Key"}),
+				    LookupAM = Table.AddIndexColumn(Table.Sort(Table.Distinct(Table.SelectRows(Table.SelectColumns(ChangedTypes, {"Account Manager ID"}), each [Account Manager ID] <> null)), {{"Account Manager ID", Order.Ascending}}), "Account Manager Key", 1, 1, Int64.Type),
+				    JoinAM = Table.NestedJoin(ExpandSLP, {"Account Manager ID"}, LookupAM, {"Account Manager ID"}, "AM_Lookup", JoinKind.LeftOuter),
+				    ExpandAM = Table.ExpandTableColumn(JoinAM, "AM_Lookup", {"Account Manager Key"}, {"Account Manager Key"}),
+				    LookupPatientStatus = Table.AddIndexColumn(Table.Sort(Table.Distinct(Table.SelectRows(Table.SelectColumns(ChangedTypes, {"Patient Status"}), each [Patient Status] <> null)), {{"Patient Status", Order.Ascending}}), "Patient Status Key", 1, 1, Int64.Type),
+				    JoinPatientStatus = Table.NestedJoin(ExpandAM, {"Patient Status"}, LookupPatientStatus, {"Patient Status"}, "PS_Lookup", JoinKind.LeftOuter),
+				    ExpandPatientStatus = Table.ExpandTableColumn(JoinPatientStatus, "PS_Lookup", {"Patient Status Key"}, {"Patient Status Key"}),
+				    LookupChurnReason = Table.AddIndexColumn(Table.Sort(Table.Distinct(Table.SelectRows(Table.SelectColumns(ChangedTypes, {"Churn Reason"}), each [Churn Reason] <> null)), {{"Churn Reason", Order.Ascending}}), "Churn Reason Key", 1, 1, Int64.Type),
+				    JoinChurnReason = Table.NestedJoin(ExpandPatientStatus, {"Churn Reason"}, LookupChurnReason, {"Churn Reason"}, "CR_Lookup", JoinKind.LeftOuter),
+				    ExpandChurnReason = Table.ExpandTableColumn(JoinChurnReason, "CR_Lookup", {"Churn Reason Key"}, {"Churn Reason Key"}),
+				    RemovedTextColumns = Table.RemoveColumns(ExpandChurnReason, {"Referral Channel", "Diagnosis", "Funding Pathway", "Speech Language Pathologist ID", "Account Manager ID", "Patient Status", "Churn Reason"})
+				in
+				    RemovedTextColumns
+

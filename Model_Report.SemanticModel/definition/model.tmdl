@@ -1,0 +1,30 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode","MCP-PBIModeling"]
+
+ref table Date
+ref table 'Referral Channel'
+ref table Diagnosis
+ref table 'Funding Pathway'
+ref table 'Speech Language Pathologist'
+ref table 'Account Manager'
+ref table 'Patient Status'
+ref table 'Churn Reason'
+ref table Patients
+ref table _Measures
+ref table 'Funnel Stage'
+ref table 'Months Since Referral'
+ref table 'Pipeline Stage'
+ref table 'NPS Touchpoint'
+
+ref cultureInfo en-US
+

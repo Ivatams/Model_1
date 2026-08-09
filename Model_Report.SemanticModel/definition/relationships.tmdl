@@ -1,0 +1,42 @@
+relationship Patients-ReferralDate-Date
+	fromColumn: Patients.'Referral Date'
+	toColumn: Date.Date
+
+relationship Patients-DeliveryDate-Date
+	isActive: false
+	fromColumn: Patients.'Delivery Date'
+	toColumn: Date.Date
+
+relationship Patients-LastEngagementDate-Date
+	isActive: false
+	fromColumn: Patients.'Last Engagement Date'
+	toColumn: Date.Date
+
+relationship Patients-ReferralChannel
+	fromColumn: Patients.'Referral Channel Key'
+	toColumn: 'Referral Channel'.'Referral Channel Key'
+
+relationship Patients-Diagnosis
+	fromColumn: Patients.'Diagnosis Key'
+	toColumn: Diagnosis.'Diagnosis Key'
+
+relationship Patients-FundingPathway
+	fromColumn: Patients.'Funding Pathway Key'
+	toColumn: 'Funding Pathway'.'Funding Pathway Key'
+
+relationship Patients-SLP
+	fromColumn: Patients.'Speech Language Pathologist Key'
+	toColumn: 'Speech Language Pathologist'.'Speech Language Pathologist Key'
+
+relationship Patients-AccountManager
+	fromColumn: Patients.'Account Manager Key'
+	toColumn: 'Account Manager'.'Account Manager Key'
+
+relationship Patients-PatientStatus
+	fromColumn: Patients.'Patient Status Key'
+	toColumn: 'Patient Status'.'Patient Status Key'
+
+relationship Patients-ChurnReason
+	fromColumn: Patients.'Churn Reason Key'
+	toColumn: 'Churn Reason'.'Churn Reason Key'
+

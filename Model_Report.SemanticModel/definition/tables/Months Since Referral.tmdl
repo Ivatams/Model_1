@@ -1,0 +1,21 @@
+/// Disconnected axis table (0–24) used only via SELECTEDVALUE by the cohort-based Time Intelligence measures. Not related to any other table. Cross with Date[Year Month] (filtered via the active Referral Date relationship) in a matrix to build cohort curves.
+table 'Months Since Referral'
+	lineageTag: ae7d8ae1-f5eb-47d0-be31-59100597c354
+
+	/// Number of whole calendar months elapsed since a patient's Referral Date month.
+	column 'Months Since Referral'
+		dataType: int64
+		lineageTag: 565c8469-0fd1-4700-bd9e-2e43db840eef
+		summarizeBy: none
+		sourceColumn: Months Since Referral
+
+	partition 'Months Since Referral' = m
+		mode: import
+		source =
+				let
+				    Source = List.Numbers(0, 25, 1),
+				    ToTable = Table.FromList(Source, Splitter.SplitByNothing(), {"Months Since Referral"}),
+				    Typed = Table.TransformColumnTypes(ToTable, {{"Months Since Referral", Int64.Type}})
+				in
+				    Typed
+

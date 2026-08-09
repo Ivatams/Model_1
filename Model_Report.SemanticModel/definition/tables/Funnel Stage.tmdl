@@ -1,0 +1,38 @@
+/// Disconnected what-if parameter table listing the 5 flexible conversion-funnel stages, in pipeline order. Not related to any other table — used only via SELECTEDVALUE by 'Incremental Devices at +10pp' to pick which stage's pass-through rate to flex.
+table 'Funnel Stage'
+	lineageTag: ce0bf92d-960b-4cc9-8700-fe661ec06ac7
+
+	/// The funnel stage whose pass-through rate is flexed by +10 percentage points.
+	column Stage
+		dataType: string
+		lineageTag: 3a402939-c5a1-4a2d-9d2c-d6869fd22890
+		summarizeBy: none
+		sourceColumn: Stage
+		sortByColumn: 'Stage Order'
+
+	/// Pipeline sequence order, used to sort Stage chronologically.
+	column 'Stage Order'
+		dataType: int64
+		isHidden
+		lineageTag: 6f037716-792c-4ebf-b150-72c2ea184493
+		summarizeBy: none
+		sourceColumn: Stage Order
+
+	partition 'Funnel Stage' = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        {"Stage", "Stage Order"},
+				        {
+				            {"SLP Evaluation", 1},
+				            {"Trial Arranged", 2},
+				            {"Trial Completed", 3},
+				            {"Application Submitted", 4},
+				            {"Funding Approved", 5}
+				        }
+				    ),
+				    Typed = Table.TransformColumnTypes(Source, {{"Stage", type text}, {"Stage Order", Int64.Type}})
+				in
+				    Typed
+

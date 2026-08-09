@@ -1,0 +1,393 @@
+/// Container table for all model measures. Holds no data and no relationships — organizational only.
+table _Measures
+	lineageTag: 5bd2f129-2929-4a12-aacb-24c816d067b4
+
+	/// Total number of patients in the pipeline, regardless of stage.
+	measure '# Patients' = DISTINCTCOUNT('Patients'[Patient ID])
+		formatString: #,##0
+		displayFolder: Core Measures\Counts
+		lineageTag: 5c27e41c-f435-45af-b9a9-c6e48a14fc27
+
+	/// Patients whose Speech-Language Pathologist (SLP) evaluation has been completed.
+	measure '# SLP Evaluations Completed' = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes")
+		formatString: #,##0
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: 4e932ddb-15da-461a-b7ca-abc67e6c74a4
+
+	measure '# Trials Arranged' = CALCULATE([# Patients], 'Patients'[Trial Arranged] = "Yes")
+		formatString: #,##0
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: 9e411639-8a99-4cf0-99d1-2d54e22e2625
+
+	measure '# Trials Completed' = CALCULATE([# Patients], 'Patients'[Trial Completed] = "Yes")
+		formatString: #,##0
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: b36f63b7-a71b-4968-a563-db855a85ec82
+
+	/// Patients whose funding application has been submitted.
+	measure '# Applications Submitted' = CALCULATE([# Patients], 'Patients'[Application Submitted] = "Yes")
+		formatString: #,##0
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: c8451fe2-ea00-4662-bff2-33b4562950bb
+
+	measure '# Fundings Approved' = CALCULATE([# Patients], 'Patients'[Funding Approved] = "Yes")
+		formatString: #,##0
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: 6903ef35-09bb-4e8a-aad8-40298a2e746e
+
+	measure '# Devices Delivered' = CALCULATE([# Patients], 'Patients'[Device Delivered] = "Yes")
+		formatString: #,##0
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: 2feb119b-6330-43a2-93d0-ce0e0a9a2b56
+
+	/// Share of all referred patients who ultimately received a device.
+	measure 'Referral To Delivery Rate (%)' = DIVIDE([# Devices Delivered], [# Patients])
+		formatString: 0.0%
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: a9c6026d-8691-457f-b75d-17d41e412e78
+
+	/// Delivered patients who are still actively engaged (not churned).
+	measure '# Active Patients' = CALCULATE([# Patients], 'Patient Status'[Patient Status] = "Active")
+		formatString: #,##0
+		displayFolder: Core Measures\Retention
+		lineageTag: c95b17f7-4cda-4c51-bae0-a2a60a60641b
+
+	/// Delivered patients who stopped using their device, for any reason.
+	measure '# Churned Patients' = CALCULATE([# Patients], 'Patient Status'[Patient Status] IN {"Churned — Abandonment","Churned — Attrition"})
+		formatString: #,##0
+		displayFolder: Core Measures\Retention
+		lineageTag: 9b2d0301-afa2-4977-a6dc-9f1e25561b34
+
+	/// Share of delivered patients who have churned.
+	measure 'Churn Rate (%)' = DIVIDE([# Churned Patients], [# Devices Delivered])
+		formatString: 0.0%
+		displayFolder: Core Measures\Retention
+		lineageTag: ef3a6289-573d-4586-958d-8348d127312e
+
+	/// Total value of delivered devices, in SEK.
+	measure 'Total Device Value' = SUM('Patients'[Device Value])
+		formatString: #,##0" SEK"
+		displayFolder: Core Measures\Revenue
+		lineageTag: 37749db9-a5b0-4ecb-8f59-be21ddd07d06
+
+	/// Total post-delivery software revenue, in SEK.
+	measure 'Total Software Revenue' = SUM('Patients'[Software Revenue])
+		formatString: #,##0" SEK"
+		displayFolder: Core Measures\Revenue
+		lineageTag: 50746258-a1be-4eca-b209-c6a756997561
+
+	/// Total post-delivery accessories revenue, in SEK.
+	measure 'Total Accessories Revenue' = SUM('Patients'[Accessories Revenue])
+		formatString: #,##0" SEK"
+		displayFolder: Core Measures\Revenue
+		lineageTag: c56085ec-6024-4a60-810e-76393757ebd9
+
+	/// Total first-year value across device, software and accessories, in SEK.
+	measure 'Total First-Year Value' = SUM('Patients'[Total First Year Value])
+		formatString: #,##0" SEK"
+		displayFolder: Core Measures\Revenue
+		lineageTag: 012c319b-00f2-49c9-9cdf-2749f0f1401c
+
+	measure 'Average First-Year Value per Delivered Patient' = DIVIDE([Total First-Year Value], [# Devices Delivered])
+		formatString: #,##0" SEK"
+		displayFolder: Core Measures\Revenue
+		lineageTag: ba83a241-2be1-4a45-a75b-ba138628860a
+
+	/// Total account manager touchpoints prior to and during referral, across all patients.
+	measure 'Total Account Manager Touchpoints' = SUM('Patients'[Account Manager Touchpoints])
+		formatString: #,##0
+		displayFolder: Core Measures\Engagement
+		lineageTag: f1afdffa-ec95-4970-97d9-48d461e6798d
+
+	/// Total post-delivery support touchpoints, across delivered patients.
+	measure 'Total Post-Delivery Touchpoints' = SUM('Patients'[Post-Delivery Touchpoints])
+		formatString: #,##0
+		displayFolder: Core Measures\Engagement
+		lineageTag: 34840b4d-3333-495b-af9f-80105b6326bc
+
+	/// Average elapsed calendar days from referral to device delivery.
+	measure 'Average Time To Device (Days)' = AVERAGE('Patients'[Time To Device (Days)])
+		formatString: #,##0.0
+		displayFolder: Core Measures\Engagement
+		lineageTag: d78b63ac-f09c-4bd9-af04-2c647333163e
+
+	measure 'Average Months Active Post-Delivery' = AVERAGE('Patients'[Months Active Post Delivery])
+		formatString: #,##0.0
+		displayFolder: Core Measures\Engagement
+		lineageTag: 09a18d45-98e9-401f-bb52-bd7e85dadfd2
+
+	/// Average Net Promoter Score captured on TD.com.
+	measure 'Average NPS (TD.com)' = AVERAGE('Patients'[NPS TD.com])
+		formatString: #,##0.0
+		displayFolder: Core Measures\NPS
+		lineageTag: 1b714c15-694e-4be7-9d4a-29091de01516
+
+	/// Average Net Promoter Score captured during the e-funding process.
+	measure 'Average NPS (E-Funding)' = AVERAGE('Patients'[NPS E-Funding])
+		formatString: #,##0.0
+		displayFolder: Core Measures\NPS
+		lineageTag: c7f04b06-2186-425c-aea9-6a6b7c974d50
+
+	/// Average Net Promoter Score captured on the post-funding case or call.
+	measure 'Average NPS (Post-Funding Case)' = AVERAGE('Patients'[NPS Post Funding Case])
+		formatString: #,##0.0
+		displayFolder: Core Measures\NPS
+		lineageTag: 4b467683-843a-4326-80f0-f26d16eacad8
+
+	/// Average Net Promoter Score captured after a support interaction.
+	measure 'Average NPS (Post Support)' = AVERAGE('Patients'[NPS Post Support])
+		formatString: #,##0.0
+		displayFolder: Core Measures\NPS
+		lineageTag: 2c8529f1-4103-4623-ae92-5fda74d47203
+
+	/// Average Net Promoter Score captured in the MyTD (My Tobii Dynavox) portal.
+	measure 'Average NPS (MYTD)' = AVERAGE('Patients'[NPS MYTD])
+		formatString: #,##0.0
+		displayFolder: Core Measures\NPS
+		lineageTag: 25422f43-fa14-4af1-a865-e8bb3fb7d9a8
+
+	/// Patients referred year-to-date, based on Referral Date.
+	measure '# Patients (ytd)' = TOTALYTD([# Patients], 'Date'[Date])
+		formatString: #,##0
+		displayFolder: Time Intelligence
+		lineageTag: a4c78cf2-ebea-4474-bc24-e3354b78418d
+
+	/// Patients referred quarter-to-date, based on Referral Date.
+	measure '# Patients (qtd)' = TOTALQTD([# Patients], 'Date'[Date])
+		formatString: #,##0
+		displayFolder: Time Intelligence
+		lineageTag: b075d1a1-b96a-4f57-8a0c-b28645c4245b
+
+	/// Patients referred month-to-date, based on Referral Date.
+	measure '# Patients (mtd)' = TOTALMTD([# Patients], 'Date'[Date])
+		formatString: #,##0
+		displayFolder: Time Intelligence
+		lineageTag: bc380bd2-d06d-4060-b867-ebef18e7807b
+
+	/// Patients referred in the same period last year, based on Referral Date.
+	measure '# Patients (ly)' = CALCULATE([# Patients], SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: #,##0
+		displayFolder: Time Intelligence
+		lineageTag: 3e77b9ce-b0ef-4faf-ba26-b59911e23d2a
+
+	/// Year-over-year growth in referred patients, based on Referral Date.
+	measure '# Patients YoY Growth (%)' = DIVIDE([# Patients] - [# Patients (ly)], [# Patients (ly)])
+		formatString: 0.0%
+		displayFolder: Time Intelligence
+		lineageTag: d3c24a09-d5df-4c59-9b34-bb4c2f44f734
+
+	/// Total first-year value year-to-date, based on Referral Date.
+	measure 'Total First-Year Value (ytd)' = TOTALYTD([Total First-Year Value], 'Date'[Date])
+		formatString: #,##0" SEK"
+		displayFolder: Time Intelligence
+		lineageTag: 9f0debc8-114f-4b90-84ac-4f03093aef0b
+
+	/// Total first-year value in the same period last year, based on Referral Date.
+	measure 'Total First-Year Value (ly)' = CALCULATE([Total First-Year Value], SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: #,##0" SEK"
+		displayFolder: Time Intelligence
+		lineageTag: 809f1c36-b7c6-42bd-874b-140a4820d5c9
+
+	/// Year-over-year growth in total first-year value, based on Referral Date.
+	measure 'Total First-Year Value YoY Growth (%)' = DIVIDE([Total First-Year Value] - [Total First-Year Value (ly)], [Total First-Year Value (ly)])
+		formatString: 0.0%
+		displayFolder: Time Intelligence
+		lineageTag: 80dfe403-baf6-4204-81d9-dd3935b32e1f
+
+	/// Devices delivered, filtered by Delivery Date instead of the default Referral Date. Activates the inactive Delivery Date relationship.
+	measure '# Devices Delivered (by Delivery Date)' = CALCULATE([# Devices Delivered], USERELATIONSHIP('Patients'[Delivery Date], 'Date'[Date]))
+		formatString: #,##0
+		displayFolder: Time Intelligence
+		lineageTag: 01db765d-e8d8-417b-830f-154ce7fd8262
+
+	/// Devices delivered year-to-date, based on Delivery Date.
+	measure '# Devices Delivered (by Delivery Date, ytd)' = CALCULATE([# Devices Delivered], USERELATIONSHIP('Patients'[Delivery Date], 'Date'[Date]), DATESYTD('Date'[Date]))
+		formatString: #,##0
+		displayFolder: Time Intelligence
+		lineageTag: e2e39a55-1187-40fd-917f-a9a8feff639d
+
+	/// Average months active post-delivery, filtered by Last Engagement Date instead of the default Referral Date. Activates the inactive Last Engagement Date relationship.
+	measure 'Average Months Active Post-Delivery (by Last Engagement Date)' = CALCULATE([Average Months Active Post-Delivery], USERELATIONSHIP('Patients'[Last Engagement Date], 'Date'[Date]))
+		formatString: #,##0.0
+		displayFolder: Time Intelligence
+		lineageTag: 955add83-0496-4861-9ae4-ac4a1213af77
+
+	/// For the funnel stage selected via the 'Funnel Stage' table (SLP Evaluation, Trial Arranged, Trial Completed, Application Submitted, or Funding Approved), estimates how many additional devices would have been delivered if that stage's own pass-through rate had been 10 percentage points higher, with every other stage's rate held at its actual observed value. The rate is capped at 100%. Requires 'Funnel Stage'[Stage] on rows/axis; returns blank if no single stage is selected.
+	measure 'Incremental Devices at +10pp' =
+			VAR SelectedStage = SELECTEDVALUE('Funnel Stage'[Stage])
+			VAR BumpPP = 0.10
+			VAR TotalReferred = [# Patients]
+			VAR PassedSLPEval = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes")
+			VAR PassedTrialArranged = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes", 'Patients'[Trial Arranged] = "Yes")
+			VAR PassedTrialCompleted = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes", 'Patients'[Trial Arranged] = "Yes", 'Patients'[Trial Completed] = "Yes")
+			VAR PassedAppSubmitted = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes", 'Patients'[Trial Arranged] = "Yes", 'Patients'[Trial Completed] = "Yes", 'Patients'[Application Submitted] = "Yes")
+			VAR PassedFundingApproved = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes", 'Patients'[Trial Arranged] = "Yes", 'Patients'[Trial Completed] = "Yes", 'Patients'[Application Submitted] = "Yes", 'Patients'[Funding Approved] = "Yes")
+			VAR BaselineDevices = PassedFundingApproved
+			VAR RateSLPEval = DIVIDE(PassedSLPEval, TotalReferred)
+			VAR RateTrialArranged = DIVIDE(PassedTrialArranged, PassedSLPEval)
+			VAR RateTrialCompleted = DIVIDE(PassedTrialCompleted, PassedTrialArranged)
+			VAR RateAppSubmitted = DIVIDE(PassedAppSubmitted, PassedTrialCompleted)
+			VAR RateFundingApproved = DIVIDE(PassedFundingApproved, PassedAppSubmitted)
+			VAR BaselineRate =
+			    SWITCH(
+			        SelectedStage,
+			        "SLP Evaluation", RateSLPEval,
+			        "Trial Arranged", RateTrialArranged,
+			        "Trial Completed", RateTrialCompleted,
+			        "Application Submitted", RateAppSubmitted,
+			        "Funding Approved", RateFundingApproved
+			    )
+			VAR ImprovedRate = MIN(BaselineRate + BumpPP, 1)
+			VAR ImpactMultiplier = DIVIDE(ImprovedRate, BaselineRate) - 1
+			VAR Result = IF(ISBLANK(BaselineRate), BLANK(), BaselineDevices * ImpactMultiplier)
+			RETURN
+			    Result
+		formatString: #,##0.0
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: 83e12dd6-2e84-43cf-9ec3-41deb6ff5b50
+
+	/// Cohort size: number of distinct patients referred in the currently filtered Referral Date period (e.g. Date[Year Month] via the active Referral Date relationship). Restated here (rather than referencing # Patients) so this folder is self-contained for cohort-curve report building.
+	measure '# Patients (cohort)' = DISTINCTCOUNT('Patients'[Patient ID])
+		formatString: #,##0
+		displayFolder: Time Intelligence\Cohort-Based
+		lineageTag: cf2e9759-6b95-45f8-ba25-3ce481fd4787
+
+	/// For the referral cohort in context and the Months Since Referral selected (from the disconnected 'Months Since Referral' table), the cumulative count of that cohort's patients who had received a device by that many whole calendar months after their referral month. Requires 'Months Since Referral'[Months Since Referral] on the axis; returns blank if no single value is selected.
+	measure '# Devices Delivered (cohort, cumulative)' =
+			VAR N = SELECTEDVALUE('Months Since Referral'[Months Since Referral])
+			VAR Result =
+			    IF(
+			        NOT ISBLANK(N),
+			        CALCULATE(
+			            [# Patients (cohort)],
+			            'Patients'[Device Delivered] = "Yes",
+			            FILTER(
+			                'Patients',
+			                NOT ISBLANK('Patients'[Delivery Date]) &&
+			                DATEDIFF('Patients'[Referral Date], 'Patients'[Delivery Date], MONTH) <= N
+			            )
+			        ) + 0
+			    )
+			RETURN
+			    Result
+		formatString: #,##0
+		displayFolder: Time Intelligence\Cohort-Based
+		lineageTag: 0a0cc2aa-8e5e-49a6-8a47-c5183afdcd68
+
+	/// How much of the typical referral-to-delivery time window has elapsed at the selected Months Since Referral, as a proxy for how much a cohort's current conversion numbers can be trusted as near-final versus still-rising. The maturity horizon is derived empirically (not hardcoded) as the 92nd percentile of the historical Time To Device (Days) distribution across all delivered patients, converted to months. This is a newly established convention as of this measure — there was no prior 92% convention in this model. Returns blank if no single Months Since Referral value is selected.
+	measure 'Cohort Maturity (%)' =
+			VAR N = SELECTEDVALUE('Months Since Referral'[Months Since Referral])
+			VAR PercentileTarget = 0.92
+			VAR DaysPerMonth = 30.4375
+			VAR MaturityHorizonDays = PERCENTILEX.INC(ALL('Patients'), 'Patients'[Time To Device (Days)], PercentileTarget)
+			VAR MaturityHorizonMonths = DIVIDE(MaturityHorizonDays, DaysPerMonth)
+			VAR Result =
+			    IF(
+			        NOT ISBLANK(N) && NOT ISBLANK(MaturityHorizonMonths),
+			        MIN(DIVIDE(N, MaturityHorizonMonths), 1)
+			    )
+			RETURN
+			    Result
+		formatString: 0.0%
+		displayFolder: Time Intelligence\Cohort-Based
+		lineageTag: b9748c36-dd31-41da-9375-5c84f6451f6a
+
+	/// Calendar days elapsed since a patient's referral date, evaluated as of today. Used to identify patients who have gone the longest without a device decision.
+	measure 'Days Since Referral' = DATEDIFF(MAX('Patients'[Referral Date]), TODAY(), DAY)
+		formatString: #,##0
+		displayFolder: Core Measures\Engagement
+		lineageTag: f2971fc0-60d3-4699-861f-09c2cb00eabe
+
+	/// For the funnel stage selected via the 'Funnel Stage' table, the observed pass-through rate: the share of patients who reached that stage's prerequisite(s) who also passed this stage. Requires 'Funnel Stage'[Stage] on rows/axis; returns blank if no single stage is selected.
+	measure 'Stage Pass-Through Rate (%)' =
+			VAR SelectedStage = SELECTEDVALUE('Funnel Stage'[Stage])
+			VAR TotalReferred = [# Patients]
+			VAR PassedSLPEval = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes")
+			VAR PassedTrialArranged = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes", 'Patients'[Trial Arranged] = "Yes")
+			VAR PassedTrialCompleted = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes", 'Patients'[Trial Arranged] = "Yes", 'Patients'[Trial Completed] = "Yes")
+			VAR PassedAppSubmitted = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes", 'Patients'[Trial Arranged] = "Yes", 'Patients'[Trial Completed] = "Yes", 'Patients'[Application Submitted] = "Yes")
+			VAR PassedFundingApproved = CALCULATE([# Patients], 'Patients'[SLP Evaluation Done] = "Yes", 'Patients'[Trial Arranged] = "Yes", 'Patients'[Trial Completed] = "Yes", 'Patients'[Application Submitted] = "Yes", 'Patients'[Funding Approved] = "Yes")
+			VAR RateSLPEval = DIVIDE(PassedSLPEval, TotalReferred)
+			VAR RateTrialArranged = DIVIDE(PassedTrialArranged, PassedSLPEval)
+			VAR RateTrialCompleted = DIVIDE(PassedTrialCompleted, PassedTrialArranged)
+			VAR RateAppSubmitted = DIVIDE(PassedAppSubmitted, PassedTrialCompleted)
+			VAR RateFundingApproved = DIVIDE(PassedFundingApproved, PassedAppSubmitted)
+			VAR Result =
+			    SWITCH(
+			        SelectedStage,
+			        "SLP Evaluation", RateSLPEval,
+			        "Trial Arranged", RateTrialArranged,
+			        "Trial Completed", RateTrialCompleted,
+			        "Application Submitted", RateAppSubmitted,
+			        "Funding Approved", RateFundingApproved
+			    )
+			RETURN
+			    Result
+		formatString: 0.0%
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: 83aca992-5bf7-421b-b20b-d514d30785bc
+
+	/// The single highest-value Funding Pathway's share of total first-year value across all pathways. A gap-to-benchmark figure for the Revenue & NPS page callout, not a duplicate of the per-pathway ranked bar.
+	measure 'Leading Funding Pathway Share (%)' =
+			VAR PathwayValues =
+			    ADDCOLUMNS(
+			        VALUES('Funding Pathway'[Funding Pathway]),
+			        "@Value", CALCULATE([Total First-Year Value])
+			    )
+			VAR TopValue = MAXX(PathwayValues, [@Value])
+			VAR GrandTotal = [Total First-Year Value]
+			RETURN
+			    DIVIDE(TopValue, GrandTotal)
+		formatString: 0.0%
+		displayFolder: Core Measures\Revenue
+		lineageTag: 774707c8-2587-4e72-904a-18df0279ea4c
+
+	/// For the pipeline checkpoint selected via the 'Pipeline Stage' table, the count of patients who reached that checkpoint. Drives the Executive Summary funnel chart. Requires 'Pipeline Stage'[Stage] on the funnel's Category axis; returns blank if no single stage is selected.
+	measure '# Reached Stage' =
+			VAR SelectedStage = SELECTEDVALUE('Pipeline Stage'[Stage])
+			VAR Result =
+			    SWITCH(
+			        SelectedStage,
+			        "Referred", [# Patients],
+			        "SLP Evaluation", [# SLP Evaluations Completed],
+			        "Trial Arranged", [# Trials Arranged],
+			        "Trial Completed", [# Trials Completed],
+			        "Application Submitted", [# Applications Submitted],
+			        "Funding Approved", [# Fundings Approved],
+			        "Delivered", [# Devices Delivered]
+			    )
+			RETURN
+			    Result
+		formatString: #,##0
+		displayFolder: Core Measures\Conversion Funnel
+		lineageTag: 2420fdf7-58d1-4a48-ad53-039eb799d74f
+
+	/// For the NPS touchpoint selected via the 'NPS Touchpoint' table, the average Net Promoter Score at that touchpoint. Drives the Revenue & NPS page's touchpoint comparison chart. Requires 'NPS Touchpoint'[Touchpoint] on the chart's Category axis; returns blank if no single touchpoint is selected.
+	measure 'Average NPS by Touchpoint' =
+			VAR SelectedTouchpoint = SELECTEDVALUE('NPS Touchpoint'[Touchpoint])
+			VAR Result =
+			    SWITCH(
+			        SelectedTouchpoint,
+			        "TD.com", [Average NPS (TD.com)],
+			        "E-Funding", [Average NPS (E-Funding)],
+			        "Post-Funding Case", [Average NPS (Post-Funding Case)],
+			        "Post Support", [Average NPS (Post Support)],
+			        "MYTD", [Average NPS (MYTD)]
+			    )
+			RETURN
+			    Result
+		formatString: #,##0.0
+		displayFolder: Core Measures\NPS
+		lineageTag: f84c0189-2aad-42f9-ac28-70a88b7c3f0f
+
+	column Key
+		dataType: int64
+		isHidden
+		lineageTag: 0389f604-da3c-489e-af05-bbff7f1ac9c5
+		summarizeBy: none
+		sourceColumn: Key
+
+	partition _Measures = m
+		mode: import
+		source = #table({"Key"}, {{1}})
+

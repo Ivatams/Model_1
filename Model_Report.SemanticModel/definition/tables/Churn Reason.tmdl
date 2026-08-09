@@ -1,0 +1,39 @@
+/// The reason a churned patient stopped using their device. Only populated for patients with a Churned status.
+table 'Churn Reason'
+	lineageTag: 9047bfe7-0c2f-40b2-b334-de7d8ce08ef0
+
+	/// Reason a churned patient stopped using their device.
+	column 'Churn Reason'
+		dataType: string
+		lineageTag: b96cd608-ee9b-4ab2-901a-0ca32d328e03
+		summarizeBy: none
+		sourceColumn: Churn Reason
+
+	/// Integer surrogate key. Relationship key to Patients.
+	column 'Churn Reason Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: afb75805-9d5c-49b7-822a-215d5b250a2d
+		summarizeBy: none
+		sourceColumn: Churn Reason Key
+
+	partition 'Churn Reason' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("c:\Users\HP\Desktop\Tobii_Dynavox\Power_BI\Model_1\Model_1.xlsx"), null, true),
+				    Sheet = Source{[Item="02 Data",Kind="Sheet"]}[Data],
+				    DataRows = Table.Skip(Sheet, 4),
+				    Selected = Table.SelectColumns(DataRows, {"Column29"}),
+				    Renamed = Table.RenameColumns(Selected, {{"Column29", "Churn Reason"}}),
+				    ReplacedDash = Table.ReplaceValue(Renamed, "—", null, Replacer.ReplaceValue, {"Churn Reason"}),
+				    ReplacedNA = Table.ReplaceValue(ReplacedDash, "n/a", null, Replacer.ReplaceValue, {"Churn Reason"}),
+				    Typed = Table.TransformColumnTypes(ReplacedNA, {{"Churn Reason", type text}}),
+				    Filtered = Table.SelectRows(Typed, each [Churn Reason] <> null and [Churn Reason] <> ""),
+				    Distinct = Table.Distinct(Filtered),
+				    Sorted = Table.Sort(Distinct, {{"Churn Reason", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Sorted, "Churn Reason Key", 1, 1, Int64.Type)
+				in
+				    Indexed
+

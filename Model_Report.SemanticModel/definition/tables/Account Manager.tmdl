@@ -1,0 +1,38 @@
+/// The Tobii Dynavox account manager (AM) responsible for the patient relationship, identified by CRM code. Not every patient has an assigned account manager. No name lookup was available in the source data.
+table 'Account Manager'
+	lineageTag: b910ea85-3d0f-4e96-bc98-fe0f2a8abd3d
+
+	/// CRM code identifying the account manager (AM).
+	column 'Account Manager ID'
+		dataType: string
+		lineageTag: 01082dae-a799-4c5c-a5b3-090746d44b01
+		summarizeBy: none
+		sourceColumn: Account Manager ID
+
+	/// Integer surrogate key. Relationship key to Patients.
+	column 'Account Manager Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: ac8d6a67-f58e-405b-b5b2-b24ddf6e06dd
+		summarizeBy: none
+		sourceColumn: Account Manager Key
+
+	partition 'Account Manager' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("c:\Users\HP\Desktop\Tobii_Dynavox\Power_BI\Model_1\Model_1.xlsx"), null, true),
+				    Sheet = Source{[Item="02 Data",Kind="Sheet"]}[Data],
+				    DataRows = Table.Skip(Sheet, 4),
+				    Selected = Table.SelectColumns(DataRows, {"Column6"}),
+				    Renamed = Table.RenameColumns(Selected, {{"Column6", "Account Manager ID"}}),
+				    ReplacedDash = Table.ReplaceValue(Renamed, "—", null, Replacer.ReplaceValue, {"Account Manager ID"}),
+				    Typed = Table.TransformColumnTypes(ReplacedDash, {{"Account Manager ID", type text}}),
+				    Filtered = Table.SelectRows(Typed, each [Account Manager ID] <> null and [Account Manager ID] <> ""),
+				    Distinct = Table.Distinct(Filtered),
+				    Sorted = Table.Sort(Distinct, {{"Account Manager ID", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Sorted, "Account Manager Key", 1, 1, Int64.Type)
+				in
+				    Indexed
+

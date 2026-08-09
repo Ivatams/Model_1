@@ -1,0 +1,38 @@
+/// Disconnected axis table listing all 7 referral-to-delivery pipeline checkpoints (including the Referred and Delivered bookends), in order. Not related to any other table — used only via SELECTEDVALUE by '# Reached Stage' to drive the Executive Summary funnel chart.
+table 'Pipeline Stage'
+	lineageTag: 43520185-1c6e-4e68-91e3-600e1938de3e
+
+	column Stage
+		dataType: string
+		lineageTag: f307147e-5b8c-43bf-8357-57909a83d4ee
+		summarizeBy: none
+		sourceColumn: Stage
+		sortByColumn: 'Stage Order'
+
+	column 'Stage Order'
+		dataType: int64
+		isHidden
+		lineageTag: 5ee995f7-f41d-40ef-9559-b1163fd6fe43
+		summarizeBy: none
+		sourceColumn: Stage Order
+
+	partition 'Pipeline Stage' = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        {"Stage", "Stage Order"},
+				        {
+				            {"Referred", 1},
+				            {"SLP Evaluation", 2},
+				            {"Trial Arranged", 3},
+				            {"Trial Completed", 4},
+				            {"Application Submitted", 5},
+				            {"Funding Approved", 6},
+				            {"Delivered", 7}
+				        }
+				    ),
+				    Typed = Table.TransformColumnTypes(Source, {{"Stage", type text}, {"Stage Order", Int64.Type}})
+				in
+				    Typed
+

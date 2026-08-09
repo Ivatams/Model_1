@@ -1,0 +1,166 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 29
+          },
+          "nodeIndex": "Account Manager",
+          "nodeLineageTag": "b910ea85-3d0f-4e96-bc98-fe0f2a8abd3d",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 185,
+            "y": 149
+          },
+          "nodeIndex": "Churn Reason",
+          "nodeLineageTag": "9047bfe7-0c2f-40b2-b334-de7d8ce08ef0",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 519,
+            "y": 0
+          },
+          "nodeIndex": "Date",
+          "nodeLineageTag": "d021e398-2555-4c67-9dc1-a5b97be20823",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 5,
+            "y": 274
+          },
+          "nodeIndex": "Diagnosis",
+          "nodeLineageTag": "1a7dc8d5-8d4b-4e51-b101-d0d4fb45cd8b",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 278,
+            "y": 373
+          },
+          "nodeIndex": "Funding Pathway",
+          "nodeLineageTag": "167ddf0a-df6d-491c-bd5e-e0556ae064b3",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 608,
+            "y": 373
+          },
+          "nodeIndex": "Patient Status",
+          "nodeLineageTag": "9d2ff6e7-8f60-487d-8355-b4a9f8873bae",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 802,
+            "y": 0
+          },
+          "nodeIndex": "Patients",
+          "nodeLineageTag": "b1d482f9-4e89-4c2f-944c-9a99f7cc950d",
+          "size": {
+            "height": 270,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1077,
+            "y": 3
+          },
+          "nodeIndex": "Referral Channel",
+          "nodeLineageTag": "21e59511-5c2a-471b-8fa2-a114f54dad53",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1000.8461151123047,
+            "y": 354
+          },
+          "nodeIndex": "Speech Language Pathologist",
+          "nodeLineageTag": "918f1ce6-23eb-40a5-ac09-25e05a65c29f",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 9,
+          "expandedHeight": 104
+        },
+        {
+          "location": {
+            "x": 1140.6153793334961,
+            "y": 179.5
+          },
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "5bd2f129-2929-4a12-aacb-24c816d067b4",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1424.6153793334961,
+            "y": 174.5
+          },
+          "nodeIndex": "Funnel Stage",
+          "nodeLineageTag": "ce0bf92d-960b-4cc9-8700-fe661ec06ac7",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

@@ -1,0 +1,139 @@
+/// Contiguous calendar date table (2025-01-01 to 2028-12-31) used for time-intelligence analysis. Relates to Patients on Referral Date (active relationship) and on Delivery Date / Last Engagement Date (inactive relationships, activated via USERELATIONSHIP in dedicated measures).
+table Date
+	lineageTag: d021e398-2555-4c67-9dc1-a5b97be20823
+	dataCategory: Time
+
+	/// The calendar date.
+	column Date
+		dataType: dateTime
+		isUnique
+		formatString: mm/dd/yyyy
+		lineageTag: 9f2e0e82-bfc7-421b-b042-d5deb6ba320a
+		summarizeBy: none
+		sourceColumn: Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 45872562-9415-4074-ab6a-cdd1925c5d82
+		summarizeBy: none
+		sourceColumn: Year
+
+	column 'Quarter Number'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b23dde09-7e74-4943-8618-76d086f12685
+		summarizeBy: none
+		sourceColumn: Quarter Number
+
+	column Quarter
+		dataType: string
+		lineageTag: c6675312-103c-4d72-9225-dacc3b2372ea
+		summarizeBy: none
+		sourceColumn: Quarter
+		sortByColumn: 'Quarter Number'
+
+	column 'Month Number'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ba244e49-c2d5-41df-975e-b8caecc79788
+		summarizeBy: none
+		sourceColumn: Month Number
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 18c8ab71-a48d-416d-b3f5-75d02d57ffee
+		summarizeBy: none
+		sourceColumn: Month Name
+		sortByColumn: 'Month Number'
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: 551ab1a4-a8f1-426c-856d-ccf76957763f
+		summarizeBy: none
+		sourceColumn: Day
+
+	column 'Day Of Week Number'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d5260550-dbab-4074-a80b-e8d7b8d3dcb4
+		summarizeBy: none
+		sourceColumn: Day Of Week Number
+
+	column 'Day Name'
+		dataType: string
+		lineageTag: 8e148738-962d-4850-8093-c6829021cbea
+		summarizeBy: none
+		sourceColumn: Day Name
+		sortByColumn: 'Day Of Week Number'
+
+	column 'Week Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: c70eb4c3-f8bd-431d-b001-cad089054438
+		summarizeBy: none
+		sourceColumn: Week Number
+
+	column 'Year Month Number'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c0210b45-fed4-42b6-b93f-440d97bb3972
+		summarizeBy: none
+		sourceColumn: Year Month Number
+
+	column 'Year Month'
+		dataType: string
+		lineageTag: 75097ba1-0d2c-4129-9c56-f5f8946796a7
+		summarizeBy: none
+		sourceColumn: Year Month
+		sortByColumn: 'Year Month Number'
+
+	/// Drill-down path from year to individual date.
+	hierarchy Calendar
+		lineageTag: b3a9e8da-c27e-4276-ad04-c488f14770ac
+
+		level Year
+			lineageTag: cffa595d-37d0-4155-85ad-37750acee782
+			column: Year
+
+		level Quarter
+			lineageTag: a98903d1-7dbe-4b16-b150-470a27ea282f
+			column: Quarter
+
+		level 'Month Name'
+			lineageTag: 754f6932-ef78-4093-a636-a32c55b1861b
+			column: 'Month Name'
+
+		level Date
+			lineageTag: 66f888e9-3f39-4e55-9800-8512d59e08fc
+			column: Date
+
+	partition Date = m
+		mode: import
+		source =
+				let
+				    StartDate = #date(2025,1,1),
+				    EndDate = #date(2028,12,31),
+				    DayCount = Duration.Days(EndDate - StartDate) + 1,
+				    DateList = List.Dates(StartDate, DayCount, #duration(1,0,0,0)),
+				    ToTable = Table.FromList(DateList, Splitter.SplitByNothing(), {"Date"}),
+				    TypedDate = Table.TransformColumnTypes(ToTable, {{"Date", type date}}),
+				    AddYear = Table.AddColumn(TypedDate, "Year", each Date.Year([Date]), Int64.Type),
+				    AddQuarterNumber = Table.AddColumn(AddYear, "Quarter Number", each Date.QuarterOfYear([Date]), Int64.Type),
+				    AddQuarter = Table.AddColumn(AddQuarterNumber, "Quarter", each "Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+				    AddMonthNumber = Table.AddColumn(AddQuarter, "Month Number", each Date.Month([Date]), Int64.Type),
+				    AddMonthName = Table.AddColumn(AddMonthNumber, "Month Name", each Date.ToText([Date], "MMMM"), type text),
+				    AddDay = Table.AddColumn(AddMonthName, "Day", each Date.Day([Date]), Int64.Type),
+				    AddDayOfWeekNumber = Table.AddColumn(AddDay, "Day Of Week Number", each Date.DayOfWeek([Date], Day.Monday) + 1, Int64.Type),
+				    AddDayName = Table.AddColumn(AddDayOfWeekNumber, "Day Name", each Date.ToText([Date], "dddd"), type text),
+				    AddWeekNumber = Table.AddColumn(AddDayName, "Week Number", each Date.WeekOfYear([Date]), Int64.Type),
+				    AddYearMonthNumber = Table.AddColumn(AddWeekNumber, "Year Month Number", each Date.Year([Date])*100 + Date.Month([Date]), Int64.Type),
+				    AddYearMonth = Table.AddColumn(AddYearMonthNumber, "Year Month", each Date.ToText([Date], "MMMM yyyy"), type text)
+				in
+				    AddYearMonth
+

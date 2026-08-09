@@ -1,0 +1,37 @@
+/// The patient's clinical diagnosis driving their need for an AAC (augmentative and alternative communication) device.
+table Diagnosis
+	lineageTag: 1a7dc8d5-8d4b-4e51-b101-d0d4fb45cd8b
+
+	/// Clinical diagnosis (e.g. ALS, Cerebral Palsy, Stroke).
+	column Diagnosis
+		dataType: string
+		lineageTag: 95b6fea7-9c89-4657-9199-0d582b2299a0
+		summarizeBy: none
+		sourceColumn: Diagnosis
+
+	/// Integer surrogate key. Relationship key to Patients.
+	column 'Diagnosis Key'
+		dataType: int64
+		isHidden
+		isAvailableInMdx: false
+		lineageTag: 8f54a2fd-2d98-4a65-9348-4aca238989f7
+		summarizeBy: none
+		sourceColumn: Diagnosis Key
+
+	partition Diagnosis = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("c:\Users\HP\Desktop\Tobii_Dynavox\Power_BI\Model_1\Model_1.xlsx"), null, true),
+				    Sheet = Source{[Item="02 Data",Kind="Sheet"]}[Data],
+				    DataRows = Table.Skip(Sheet, 4),
+				    Selected = Table.SelectColumns(DataRows, {"Column3"}),
+				    Renamed = Table.RenameColumns(Selected, {{"Column3", "Diagnosis"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"Diagnosis", type text}}),
+				    Filtered = Table.SelectRows(Typed, each [Diagnosis] <> null and [Diagnosis] <> ""),
+				    Distinct = Table.Distinct(Filtered),
+				    Sorted = Table.Sort(Distinct, {{"Diagnosis", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Sorted, "Diagnosis Key", 1, 1, Int64.Type)
+				in
+				    Indexed
+
