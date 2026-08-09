@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "120e5960ecf40753b2ae",
   "position": {
     "x": 32,
@@ -13,25 +13,6 @@
     "visualType": "pivotTable",
     "query": {
       "queryState": {
-        "Columns": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Months Since Referral"
-                    }
-                  },
-                  "Property": "Months Since Referral"
-                }
-              },
-              "queryRef": "Months Since Referral.Months Since Referral",
-              "nativeQueryRef": "Months Since Referral",
-              "active": true
-            }
-          ]
-        },
         "Rows": {
           "projections": [
             {
@@ -46,8 +27,25 @@
                 }
               },
               "queryRef": "Date.Year Month",
-              "nativeQueryRef": "Year Month",
-              "active": true
+              "nativeQueryRef": "Year Month"
+            }
+          ]
+        },
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Months Since Referral"
+                    }
+                  },
+                  "Property": "Months Since Referral"
+                }
+              },
+              "queryRef": "Months Since Referral.Months Since Referral",
+              "nativeQueryRef": "Months Since Referral"
             }
           ]
         },

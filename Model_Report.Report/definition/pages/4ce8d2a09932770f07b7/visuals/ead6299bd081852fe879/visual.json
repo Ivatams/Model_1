@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "ead6299bd081852fe879",
   "position": {
     "x": 32,
@@ -27,8 +27,7 @@
                 }
               },
               "queryRef": "Account Manager.Account Manager ID",
-              "nativeQueryRef": "Account Manager ID",
-              "active": true
+              "nativeQueryRef": "Account Manager ID"
             }
           ]
         }

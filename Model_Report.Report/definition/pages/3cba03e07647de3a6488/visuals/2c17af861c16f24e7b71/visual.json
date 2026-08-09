@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "2c17af861c16f24e7b71",
   "position": {
-    "x": 989.65517241379314,
-    "y": 120.68965517241381,
+    "x": 976,
+    "y": 120,
     "z": 5000,
-    "height": 406.89655172413796,
-    "width": 906.896551724138,
+    "height": 408,
+    "width": 920,
     "tabOrder": 5000
   },
   "visual": {
@@ -27,8 +27,7 @@
                 }
               },
               "queryRef": "Pipeline Stage.Stage",
-              "nativeQueryRef": "Stage",
-              "active": true
+              "nativeQueryRef": "Stage"
             }
           ]
         },

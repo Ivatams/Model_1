@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "e2e5eb612812a8e138b4",
   "position": {
     "x": 32,
@@ -27,26 +27,7 @@
                 }
               },
               "queryRef": "Months Since Referral.Months Since Referral",
-              "nativeQueryRef": "Months Since Referral",
-              "active": true
-            }
-          ]
-        },
-        "Rows": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Date"
-                    }
-                  },
-                  "Property": "Year Month"
-                }
-              },
-              "queryRef": "Date.Year Month",
-              "nativeQueryRef": "Year Month"
+              "nativeQueryRef": "Months Since Referral"
             }
           ]
         },
@@ -65,6 +46,24 @@
               },
               "queryRef": "_Measures.# Devices Delivered (cohort, cumulative)",
               "nativeQueryRef": "# Devices Delivered (cohort, cumulative)"
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Date"
+                    }
+                  },
+                  "Property": "Year Month"
+                }
+              },
+              "queryRef": "Date.Year Month",
+              "nativeQueryRef": "Year Month"
             }
           ]
         }

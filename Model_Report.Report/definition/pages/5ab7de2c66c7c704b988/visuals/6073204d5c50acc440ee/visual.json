@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.9.0/schema.json",
   "name": "6073204d5c50acc440ee",
   "position": {
     "x": 32,
@@ -27,8 +27,7 @@
                 }
               },
               "queryRef": "Diagnosis.Diagnosis",
-              "nativeQueryRef": "Diagnosis",
-              "active": true
+              "nativeQueryRef": "Diagnosis"
             }
           ]
         },
@@ -66,7 +65,8 @@
             },
             "direction": "Descending"
           }
-        ]
+        ],
+        "isDefaultSort": false
       }
     },
     "visualContainerObjects": {
